@@ -31,15 +31,15 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
 
     return (
         <>
-            {/* Overlay */}
+            {/* Overlay - only on mobile when open */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 z-40 bg-black/50"
+                    className="fixed inset-0 z-40 bg-black/50 md:hidden"
                     onClick={onClose}
                 />
             )}
 
-            {/* Sidebar - now collapsible on all screens */}
+            {/* Sidebar - overlay on mobile, collapsible on md+ */}
             <aside
                 className={cn(
                     "fixed top-16 left-0 z-40 h-[calc(100vh-4rem)] w-64 border-r transition-transform duration-200 ease-in-out overflow-y-auto",
@@ -54,7 +54,6 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
                     {/* Home Link */}
                     <Link
                         href="/"
-                        onClick={onClose}
                         className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors font-medium"
                         style={pathname === "/" ? {
                             backgroundColor: `${theme.colors.primary.DEFAULT}30`,
@@ -116,7 +115,6 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
                                                 <Link
                                                     key={game.id}
                                                     href={gamePath}
-                                                    onClick={onClose}
                                                     className="block px-4 py-2 rounded-lg text-sm transition-colors"
                                                     style={isActive ? {
                                                         backgroundColor: `${theme.colors.primary.DEFAULT}30`,

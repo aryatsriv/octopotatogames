@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "./Header";
 import SideNav from "./SideNav";
 import { useThemeColors } from "@/lib/useThemeColors";
+import { cn } from "@/lib/utils";
 
 export default function LayoutClient({
     children,
@@ -20,7 +21,13 @@ export default function LayoutClient({
                 isOpen={isSideNavOpen}
                 onClose={() => setIsSideNavOpen(false)}
             />
-            <main className="min-h-[calc(100vh-4rem)]" style={{ backgroundColor: colors.background.DEFAULT }}>
+            <main
+                className={cn(
+                    "min-h-[calc(100vh-4rem)] transition-all duration-200",
+                    isSideNavOpen && "md:pl-64"
+                )}
+                style={{ backgroundColor: colors.background.DEFAULT }}
+            >
                 <div className="p-6">{children}</div>
             </main>
         </>

@@ -2,21 +2,21 @@ export const theme = {
     colors: {
         // Primary colors
         primary: {
-            DEFAULT: '#10b981', // emerald-500
-            light: '#34d399',   // emerald-400
-            dark: '#059669',    // emerald-600
+            DEFAULT: '#047857', // emerald-700 (even darker)
+            light: '#059669',   // emerald-600 (even darker)
+            dark: '#065f46',    // emerald-800 (even darker)
         },
         // Secondary colors
         secondary: {
-            DEFAULT: '#14b8a6', // teal-500
-            light: '#2dd4bf',   // teal-400
-            dark: '#0d9488',    // teal-600
+            DEFAULT: '#0f766e', // teal-700 (even darker)
+            light: '#0d9488',   // teal-600 (even darker)
+            dark: '#115e59',    // teal-800 (even darker)
         },
         // Accent colors
         accent: {
-            DEFAULT: '#22c55e', // green-500
-            light: '#4ade80',   // green-400
-            dark: '#16a34a',    // green-600
+            DEFAULT: '#15803d', // green-700 (even darker)
+            light: '#16a34a',   // green-600 (even darker)
+            dark: '#166534',    // green-800 (even darker)
         },
         // Dark mode colors
         dark: {
