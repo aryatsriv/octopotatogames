@@ -6,6 +6,7 @@ import { Gamepad2, ArrowLeft } from "lucide-react";
 import { notFound, useParams } from "next/navigation";
 import { theme } from "@/lib/theme";
 import { useThemeColors } from "@/lib/useThemeColors";
+import GameRenderer from "@/components/GameRenderer";
 
 export default function GamePage() {
     const params = useParams();
@@ -83,23 +84,11 @@ export default function GamePage() {
             </div>
 
             {/* Game Container */}
-            <div className="rounded-lg border p-8" style={{
+            <div className="rounded-lg border p-6" style={{
                 backgroundColor: colors.background.secondary,
                 borderColor: colors.border.DEFAULT
             }}>
-                <div className="aspect-video rounded-lg flex items-center justify-center" style={{
-                    backgroundColor: colors.background.tertiary
-                }}>
-                    <div className="text-center">
-                        <Gamepad2 className="h-24 w-24 mx-auto mb-4" style={{ color: colors.text.tertiary }} />
-                        <p className="text-lg" style={{ color: colors.text.tertiary }}>
-                            Game will be loaded here
-                        </p>
-                        <p className="text-sm mt-2" style={{ color: colors.text.tertiary, opacity: 0.7 }}>
-                            This is a placeholder for the actual game content
-                        </p>
-                    </div>
-                </div>
+                <GameRenderer game={game} />
             </div>
 
             {/* Game Info */}

@@ -26,7 +26,7 @@ export default function LayoutClient({
                     "min-h-[calc(100vh-4rem)] transition-all duration-200",
                     isSideNavOpen && "md:pl-64"
                 )}
-                style={{ backgroundColor: colors.background.DEFAULT }}
+                style={{ backgroundColor: colors.background.primary }}
             >
                 <div className="p-6">{children}</div>
             </main>
