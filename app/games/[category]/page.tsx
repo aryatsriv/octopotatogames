@@ -2,6 +2,7 @@ import { gameCategories } from "@/lib/games-data";
 import Link from "next/link";
 import { Gamepad2, ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
+import { theme } from "@/lib/theme";
 
 export function generateStaticParams() {
     return gameCategories.map((category) => ({
@@ -24,25 +25,28 @@ export default async function CategoryPage({
     return (
         <div className="space-y-6">
             {/* Breadcrumb */}
-            <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-                <Link href="/" className="hover:text-purple-600 dark:hover:text-purple-400">
+            <div className="flex items-center space-x-2 text-sm text-gray-400">
+                <Link href="/" className="hover:underline" style={{ color: theme.colors.primary.light }}>
                     Home
                 </Link>
                 <span>/</span>
-                <span className="text-gray-900 dark:text-white">{category.name}</span>
+                <span className="text-white">{category.name}</span>
             </div>
 
             {/* Back Button */}
             <Link
                 href="/"
-                className="inline-flex items-center space-x-2 text-purple-600 dark:text-purple-400 hover:underline"
+                className="inline-flex items-center space-x-2 hover:underline"
+                style={{ color: theme.colors.primary.light }}
             >
                 <ArrowLeft className="h-4 w-4" />
                 <span>Back to Home</span>
             </Link>
 
             {/* Category Header */}
-            <div className="bg-linear-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white">
+            <div className="rounded-2xl p-8 text-white" style={{
+                background: `linear-gradient(to right, ${theme.colors.primary.dark}, ${theme.colors.secondary.dark})`
+            }}>
                 <h1 className="text-4xl font-bold mb-2">{category.name} Games</h1>
                 <p className="text-xl opacity-90">
                     {category.games.length} games available in this category
@@ -55,16 +59,18 @@ export default async function CategoryPage({
                     <Link
                         key={game.id}
                         href={`/games/${category.slug}/${game.slug}`}
-                        className="group bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all hover:scale-105"
+                        className="group bg-gray-800 rounded-lg border border-gray-700 overflow-hidden hover:shadow-xl transition-all hover:scale-105"
                     >
-                        <div className="aspect-video bg-linear-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+                        <div className="aspect-video flex items-center justify-center" style={{
+                            background: `linear-gradient(to bottom right, ${theme.colors.primary.light}, ${theme.colors.secondary.light})`
+                        }}>
                             <Gamepad2 className="h-16 w-16 text-white group-hover:scale-110 transition-transform" />
                         </div>
                         <div className="p-4">
-                            <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-2">
+                            <h3 className="font-semibold text-lg text-white mb-2">
                                 {game.name}
                             </h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                            <p className="text-sm text-gray-400 line-clamp-2">
                                 {game.description}
                             </p>
                         </div>

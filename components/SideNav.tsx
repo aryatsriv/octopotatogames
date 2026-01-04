@@ -6,6 +6,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronRight, Gamepad2 } from "lucide-react";
 import { gameCategories } from "@/lib/games-data";
 import { cn } from "@/lib/utils";
+import { theme } from "@/lib/theme";
 
 interface SideNavProps {
     isOpen: boolean;
@@ -51,9 +52,13 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
                         className={cn(
                             "flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors text-white",
                             pathname === "/"
-                                ? "bg-purple-900/30 text-purple-400"
+                                ? "font-medium"
                                 : "hover:bg-gray-800"
                         )}
+                        style={pathname === "/" ? {
+                            backgroundColor: `${theme.colors.primary.DEFAULT}30`,
+                            color: theme.colors.primary.light
+                        } : {}}
                     >
                         <Gamepad2 className="h-5 w-5" />
                         <span className="font-medium">All Games</span>
@@ -72,9 +77,13 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
                                     className={cn(
                                         "w-full flex items-center justify-between px-4 py-2 rounded-lg transition-colors text-white",
                                         isCategoryActive
-                                            ? "bg-purple-900/20 text-purple-400"
+                                            ? ""
                                             : "hover:bg-gray-800"
                                     )}
+                                    style={isCategoryActive ? {
+                                        backgroundColor: `${theme.colors.primary.DEFAULT}20`,
+                                        color: theme.colors.primary.light
+                                    } : {}}
                                 >
                                     <span className="font-medium">{category.name}</span>
                                     {isExpanded ? (
@@ -99,9 +108,13 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
                                                     className={cn(
                                                         "block px-4 py-2 rounded-lg text-sm transition-colors",
                                                         isActive
-                                                            ? "bg-purple-900/30 text-purple-400 font-medium"
+                                                            ? "font-medium"
                                                             : "text-gray-400 hover:bg-gray-800 hover:text-gray-200"
                                                     )}
+                                                    style={isActive ? {
+                                                        backgroundColor: `${theme.colors.primary.DEFAULT}30`,
+                                                        color: theme.colors.primary.light
+                                                    } : {}}
                                                 >
                                                     {game.name}
                                                 </Link>
