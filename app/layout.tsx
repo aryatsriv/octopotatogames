@@ -25,11 +25,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <LayoutClient>{children}</LayoutClient>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <LayoutClient>{children}</LayoutClient>
+        </ThemeProvider>
       </body>
     </html>
   );

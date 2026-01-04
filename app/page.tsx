@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { gameCategories } from "@/lib/games-data";
 import { Gamepad2 } from "lucide-react";
 import { theme } from "@/lib/theme";
+import { useThemeColors } from "@/lib/useThemeColors";
 
 export default function Home() {
+  const { colors } = useThemeColors();
+
   return (
     <div className="space-y-8">
       {/* Hero Section */}
@@ -20,7 +25,7 @@ export default function Home() {
 
       {/* Categories Grid */}
       <div className="space-y-8">
-        <h2 className="text-2xl font-bold text-white">
+        <h2 className="text-2xl font-bold" style={{ color: colors.text.primary }}>
           Browse by Category
         </h2>
 
@@ -28,7 +33,11 @@ export default function Home() {
           {gameCategories.map((category) => (
             <div
               key={category.id}
-              className="bg-gray-800 rounded-lg border border-gray-700 p-6 hover:shadow-lg transition-shadow"
+              className="rounded-lg border p-6 hover:shadow-lg transition-shadow"
+              style={{
+                backgroundColor: colors.background.secondary,
+                borderColor: colors.border.DEFAULT
+              }}
             >
               <div className="flex items-center space-x-3 mb-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg" style={{
@@ -36,12 +45,12 @@ export default function Home() {
                 }}>
                   <Gamepad2 className="h-6 w-6" style={{ color: theme.colors.primary.light }} />
                 </div>
-                <h3 className="text-xl font-semibold text-white">
+                <h3 className="text-xl font-semibold" style={{ color: colors.text.primary }}>
                   {category.name}
                 </h3>
               </div>
 
-              <p className="text-sm text-gray-400 mb-4">
+              <p className="text-sm mb-4" style={{ color: colors.text.tertiary }}>
                 {category.games.length} games available
               </p>
 
@@ -64,7 +73,7 @@ export default function Home() {
 
       {/* Featured Games */}
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold text-white">
+        <h2 className="text-2xl font-bold" style={{ color: colors.text.primary }}>
           Popular Games
         </h2>
 
@@ -76,17 +85,21 @@ export default function Home() {
               <Link
                 key={game.id}
                 href={`/games/${game.category.slug}/${game.slug}`}
-                className="bg-gray-800 rounded-lg border border-gray-700 p-4 hover:shadow-lg transition-all hover:scale-105"
+                className="rounded-lg border p-4 hover:shadow-lg transition-all hover:scale-105"
+                style={{
+                  backgroundColor: colors.background.secondary,
+                  borderColor: colors.border.DEFAULT
+                }}
               >
                 <div className="aspect-video rounded-lg mb-3 flex items-center justify-center" style={{
                   background: `linear-gradient(to bottom right, ${theme.colors.primary.light}, ${theme.colors.secondary.light})`
                 }}>
                   <Gamepad2 className="h-12 w-12 text-white" />
                 </div>
-                <h3 className="font-semibold text-white mb-1">
+                <h3 className="font-semibold mb-1" style={{ color: colors.text.primary }}>
                   {game.name}
                 </h3>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs" style={{ color: colors.text.tertiary }}>
                   {game.description}
                 </p>
               </Link>

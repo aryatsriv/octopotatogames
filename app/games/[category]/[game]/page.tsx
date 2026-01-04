@@ -1,30 +1,18 @@
+"use client";
+
 import { gameCategories } from "@/lib/games-data";
 import Link from "next/link";
 import { Gamepad2, ArrowLeft } from "lucide-react";
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { theme } from "@/lib/theme";
+import { useThemeColors } from "@/lib/useThemeColors";
 
-export function generateStaticParams() {
-    const params: { category: string; game: string }[] = [];
+export default function GamePage() {
+    const params = useParams();
+    const { colors } = useThemeColors();
+    const categorySlug = params.category as string;
+    const gameSlug = params.game as string;
 
-    gameCategories.forEach((category) => {
-        category.games.forEach((game) => {
-            params.push({
-                category: category.slug,
-                game: game.slug,
-            });
-        });
-    });
-
-    return params;
-}
-
-export default async function GamePage({
-    params,
-}: {
-    params: Promise<{ category: string; game: string }>;
-}) {
-    const { category: categorySlug, game: gameSlug } = await params;
     const category = gameCategories.find((cat) => cat.slug === categorySlug);
     const game = category?.games.find((g) => g.slug === gameSlug);
 
@@ -35,7 +23,7 @@ export default async function GamePage({
     return (
         <div className="space-y-6">
             {/* Breadcrumb */}
-            <div className="flex items-center space-x-2 text-sm text-gray-400">
+            <div className="flex items-center space-x-2 text-sm" style={{ color: colors.text.tertiary }}>
                 <Link href="/" className="hover:underline" style={{ color: theme.colors.primary.light }}>
                     Home
                 </Link>
@@ -48,7 +36,7 @@ export default async function GamePage({
                     {category.name}
                 </Link>
                 <span>/</span>
-                <span className="text-white">{game.name}</span>
+                <span style={{ color: colors.text.primary }}>{game.name}</span>
             </div>
 
             {/* Back Button */}
@@ -62,7 +50,10 @@ export default async function GamePage({
             </Link>
 
             {/* Game Header */}
-            <div className="bg-gray-800 rounded-lg border border-gray-700 p-8">
+            <div className="rounded-lg border p-8" style={{
+                backgroundColor: colors.background.secondary,
+                borderColor: colors.border.DEFAULT
+            }}>
                 <div className="flex items-start space-x-6">
                     <div className="shrink-0">
                         <div className="w-32 h-32 rounded-lg flex items-center justify-center" style={{
@@ -73,10 +64,10 @@ export default async function GamePage({
                     </div>
 
                     <div className="flex-1">
-                        <h1 className="text-4xl font-bold text-white mb-2">
+                        <h1 className="text-4xl font-bold mb-2" style={{ color: colors.text.primary }}>
                             {game.name}
                         </h1>
-                        <p className="text-gray-400 mb-4">
+                        <p className="mb-4" style={{ color: colors.text.tertiary }}>
                             {game.description}
                         </p>
                         <div className="flex items-center space-x-4">
@@ -92,14 +83,19 @@ export default async function GamePage({
             </div>
 
             {/* Game Container */}
-            <div className="bg-gray-800 rounded-lg border border-gray-700 p-8">
-                <div className="aspect-video bg-gray-700 rounded-lg flex items-center justify-center">
+            <div className="rounded-lg border p-8" style={{
+                backgroundColor: colors.background.secondary,
+                borderColor: colors.border.DEFAULT
+            }}>
+                <div className="aspect-video rounded-lg flex items-center justify-center" style={{
+                    backgroundColor: colors.background.tertiary
+                }}>
                     <div className="text-center">
-                        <Gamepad2 className="h-24 w-24 text-gray-600 mx-auto mb-4" />
-                        <p className="text-gray-400 text-lg">
+                        <Gamepad2 className="h-24 w-24 mx-auto mb-4" style={{ color: colors.text.tertiary }} />
+                        <p className="text-lg" style={{ color: colors.text.tertiary }}>
                             Game will be loaded here
                         </p>
-                        <p className="text-sm text-gray-500 mt-2">
+                        <p className="text-sm mt-2" style={{ color: colors.text.tertiary, opacity: 0.7 }}>
                             This is a placeholder for the actual game content
                         </p>
                     </div>
@@ -108,20 +104,26 @@ export default async function GamePage({
 
             {/* Game Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-gray-800 rounded-lg border border-gray-700 p-6">
-                    <h2 className="text-xl font-semibold text-white mb-4">
+                <div className="rounded-lg border p-6" style={{
+                    backgroundColor: colors.background.secondary,
+                    borderColor: colors.border.DEFAULT
+                }}>
+                    <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text.primary }}>
                         About This Game
                     </h2>
-                    <p className="text-gray-400">
+                    <p style={{ color: colors.text.tertiary }}>
                         {game.description || "No description available."}
                     </p>
                 </div>
 
-                <div className="bg-gray-800 rounded-lg border border-gray-700 p-6">
-                    <h2 className="text-xl font-semibold text-white mb-4">
+                <div className="rounded-lg border p-6" style={{
+                    backgroundColor: colors.background.secondary,
+                    borderColor: colors.border.DEFAULT
+                }}>
+                    <h2 className="text-xl font-semibold mb-4" style={{ color: colors.text.primary }}>
                         How to Play
                     </h2>
-                    <ul className="space-y-2 text-gray-400">
+                    <ul className="space-y-2" style={{ color: colors.text.tertiary }}>
                         <li>• Use arrow keys to move</li>
                         <li>• Press Space to jump/shoot</li>
                         <li>• Collect points and avoid obstacles</li>

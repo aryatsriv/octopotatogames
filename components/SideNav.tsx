@@ -7,6 +7,7 @@ import { ChevronDown, ChevronRight, Gamepad2 } from "lucide-react";
 import { gameCategories } from "@/lib/games-data";
 import { cn } from "@/lib/utils";
 import { theme } from "@/lib/theme";
+import { useThemeColors } from "@/lib/useThemeColors";
 
 interface SideNavProps {
     isOpen: boolean;
@@ -15,6 +16,7 @@ interface SideNavProps {
 
 export default function SideNav({ isOpen, onClose }: SideNavProps) {
     const pathname = usePathname();
+    const { colors } = useThemeColors();
     const [expandedCategories, setExpandedCategories] = useState<string[]>([
         gameCategories[0]?.id || "",
     ]);
@@ -40,28 +42,35 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
             {/* Sidebar - now collapsible on all screens */}
             <aside
                 className={cn(
-                    "fixed top-16 left-0 z-40 h-[calc(100vh-4rem)] w-64 border-r border-gray-800 bg-gray-900 transition-transform duration-200 ease-in-out overflow-y-auto",
+                    "fixed top-16 left-0 z-40 h-[calc(100vh-4rem)] w-64 border-r transition-transform duration-200 ease-in-out overflow-y-auto",
                     isOpen ? "translate-x-0" : "-translate-x-full"
                 )}
+                style={{
+                    borderColor: colors.border.DEFAULT,
+                    backgroundColor: colors.background.secondary
+                }}
             >
                 <nav className="p-4 space-y-2">
                     {/* Home Link */}
                     <Link
                         href="/"
                         onClick={onClose}
-                        className={cn(
-                            "flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors text-white",
-                            pathname === "/"
-                                ? "font-medium"
-                                : "hover:bg-gray-800"
-                        )}
+                        className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors font-medium"
                         style={pathname === "/" ? {
                             backgroundColor: `${theme.colors.primary.DEFAULT}30`,
                             color: theme.colors.primary.light
-                        } : {}}
+                        } : {
+                            color: colors.text.primary
+                        }}
+                        onMouseEnter={(e) => {
+                            if (pathname !== "/") e.currentTarget.style.backgroundColor = colors.background.tertiary;
+                        }}
+                        onMouseLeave={(e) => {
+                            if (pathname !== "/") e.currentTarget.style.backgroundColor = 'transparent';
+                        }}
                     >
                         <Gamepad2 className="h-5 w-5" />
-                        <span className="font-medium">All Games</span>
+                        <span>All Games</span>
                     </Link>
 
                     {/* Categories */}
@@ -74,18 +83,21 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
                                 {/* Category Header */}
                                 <button
                                     onClick={() => toggleCategory(category.id)}
-                                    className={cn(
-                                        "w-full flex items-center justify-between px-4 py-2 rounded-lg transition-colors text-white",
-                                        isCategoryActive
-                                            ? ""
-                                            : "hover:bg-gray-800"
-                                    )}
+                                    className="w-full flex items-center justify-between px-4 py-2 rounded-lg transition-colors font-medium"
                                     style={isCategoryActive ? {
                                         backgroundColor: `${theme.colors.primary.DEFAULT}20`,
                                         color: theme.colors.primary.light
-                                    } : {}}
+                                    } : {
+                                        color: colors.text.primary
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        if (!isCategoryActive) e.currentTarget.style.backgroundColor = colors.background.tertiary;
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        if (!isCategoryActive) e.currentTarget.style.backgroundColor = 'transparent';
+                                    }}
                                 >
-                                    <span className="font-medium">{category.name}</span>
+                                    <span>{category.name}</span>
                                     {isExpanded ? (
                                         <ChevronDown className="h-4 w-4" />
                                     ) : (
@@ -105,16 +117,26 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
                                                     key={game.id}
                                                     href={gamePath}
                                                     onClick={onClose}
-                                                    className={cn(
-                                                        "block px-4 py-2 rounded-lg text-sm transition-colors",
-                                                        isActive
-                                                            ? "font-medium"
-                                                            : "text-gray-400 hover:bg-gray-800 hover:text-gray-200"
-                                                    )}
+                                                    className="block px-4 py-2 rounded-lg text-sm transition-colors"
                                                     style={isActive ? {
                                                         backgroundColor: `${theme.colors.primary.DEFAULT}30`,
-                                                        color: theme.colors.primary.light
-                                                    } : {}}
+                                                        color: theme.colors.primary.light,
+                                                        fontWeight: 500
+                                                    } : {
+                                                        color: colors.text.tertiary
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        if (!isActive) {
+                                                            e.currentTarget.style.backgroundColor = colors.background.tertiary;
+                                                            e.currentTarget.style.color = colors.text.secondary;
+                                                        }
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        if (!isActive) {
+                                                            e.currentTarget.style.backgroundColor = 'transparent';
+                                                            e.currentTarget.style.color = colors.text.tertiary;
+                                                        }
+                                                    }}
                                                 >
                                                     {game.name}
                                                 </Link>

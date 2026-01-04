@@ -1,21 +1,16 @@
+"use client";
+
 import { gameCategories } from "@/lib/games-data";
 import Link from "next/link";
 import { Gamepad2, ArrowLeft } from "lucide-react";
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { theme } from "@/lib/theme";
+import { useThemeColors } from "@/lib/useThemeColors";
 
-export function generateStaticParams() {
-    return gameCategories.map((category) => ({
-        category: category.slug,
-    }));
-}
-
-export default async function CategoryPage({
-    params,
-}: {
-    params: Promise<{ category: string }>;
-}) {
-    const { category: categorySlug } = await params;
+export default function CategoryPage() {
+    const params = useParams();
+    const { colors } = useThemeColors();
+    const categorySlug = params.category as string;
     const category = gameCategories.find((cat) => cat.slug === categorySlug);
 
     if (!category) {
@@ -25,12 +20,12 @@ export default async function CategoryPage({
     return (
         <div className="space-y-6">
             {/* Breadcrumb */}
-            <div className="flex items-center space-x-2 text-sm text-gray-400">
+            <div className="flex items-center space-x-2 text-sm" style={{ color: colors.text.tertiary }}>
                 <Link href="/" className="hover:underline" style={{ color: theme.colors.primary.light }}>
                     Home
                 </Link>
                 <span>/</span>
-                <span className="text-white">{category.name}</span>
+                <span style={{ color: colors.text.primary }}>{category.name}</span>
             </div>
 
             {/* Back Button */}
@@ -59,7 +54,11 @@ export default async function CategoryPage({
                     <Link
                         key={game.id}
                         href={`/games/${category.slug}/${game.slug}`}
-                        className="group bg-gray-800 rounded-lg border border-gray-700 overflow-hidden hover:shadow-xl transition-all hover:scale-105"
+                        className="group rounded-lg border overflow-hidden hover:shadow-xl transition-all hover:scale-105"
+                        style={{
+                            backgroundColor: colors.background.secondary,
+                            borderColor: colors.border.DEFAULT
+                        }}
                     >
                         <div className="aspect-video flex items-center justify-center" style={{
                             background: `linear-gradient(to bottom right, ${theme.colors.primary.light}, ${theme.colors.secondary.light})`
@@ -67,10 +66,10 @@ export default async function CategoryPage({
                             <Gamepad2 className="h-16 w-16 text-white group-hover:scale-110 transition-transform" />
                         </div>
                         <div className="p-4">
-                            <h3 className="font-semibold text-lg text-white mb-2">
+                            <h3 className="font-semibold text-lg mb-2" style={{ color: colors.text.primary }}>
                                 {game.name}
                             </h3>
-                            <p className="text-sm text-gray-400 line-clamp-2">
+                            <p className="text-sm line-clamp-2" style={{ color: colors.text.tertiary }}>
                                 {game.description}
                             </p>
                         </div>
