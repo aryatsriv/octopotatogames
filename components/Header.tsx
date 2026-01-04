@@ -11,10 +11,10 @@ export default function Header({ onMenuClick }: HeaderProps) {
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-gray-900" style={{ borderColor: theme.colors.border.dark }}>
             <div className="flex h-16 items-center px-4 md:px-6">
-                {/* Mobile menu button */}
+                {/* Menu toggle button - now visible on all screens */}
                 <button
                     onClick={onMenuClick}
-                    className="mr-4 inline-flex items-center justify-center rounded-md p-2 hover:bg-gray-800 lg:hidden text-white"
+                    className="mr-4 inline-flex items-center justify-center rounded-md p-2 hover:bg-gray-800 text-white"
                     aria-label="Toggle menu"
                 >
                     <Menu className="h-6 w-6" />

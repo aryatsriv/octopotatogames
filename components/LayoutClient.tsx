@@ -18,7 +18,7 @@ export default function LayoutClient({
                 isOpen={isSideNavOpen}
                 onClose={() => setIsSideNavOpen(false)}
             />
-            <main className="lg:pl-64 min-h-[calc(100vh-4rem)] bg-gray-950">
+            <main className="min-h-[calc(100vh-4rem)] bg-gray-950">
                 <div className="p-6">{children}</div>
             </main>
         </>

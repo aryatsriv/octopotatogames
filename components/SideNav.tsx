@@ -29,19 +29,19 @@ export default function SideNav({ isOpen, onClose }: SideNavProps) {
 
     return (
         <>
-            {/* Overlay for mobile */}
+            {/* Overlay */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+                    className="fixed inset-0 z-40 bg-black/50"
                     onClick={onClose}
                 />
             )}
 
-            {/* Sidebar */}
+            {/* Sidebar - now collapsible on all screens */}
             <aside
                 className={cn(
                     "fixed top-16 left-0 z-40 h-[calc(100vh-4rem)] w-64 border-r border-gray-800 bg-gray-900 transition-transform duration-200 ease-in-out overflow-y-auto",
-                    isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+                    isOpen ? "translate-x-0" : "-translate-x-full"
                 )}
             >
                 <nav className="p-4 space-y-2">
