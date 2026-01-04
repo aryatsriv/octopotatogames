@@ -159,4 +159,44 @@ export const gameCategories: GameCategory[] = [
             },
         ],
     },
+    {
+        id: "5",
+        name: "Computer Skills",
+        slug: "computerskills",
+        games: [
+            {
+                id: "5-1",
+                name: "Reaction Time Test",
+                slug: "reaction-test",
+                description: "Test your reaction speed - click when the screen turns green!",
+                config: {
+                    engine: "javascript",
+                    entryPoint: "/games/reaction-test/game.js",
+                    aspectRatio: "16/9",
+                },
+            },
+            {
+                id: "5-2",
+                name: "Click Speed Test",
+                slug: "click-test",
+                description: "How many times can you click in 10 seconds?",
+                config: {
+                    engine: "javascript",
+                    entryPoint: "/games/click-test/game.js",
+                    aspectRatio: "16/9",
+                },
+            },
+            {
+                id: "5-3",
+                name: "Typing Speed Test",
+                slug: "typing-test",
+                description: "Test your typing speed and accuracy in 60 seconds",
+                config: {
+                    engine: "javascript",
+                    entryPoint: "/games/typing-test/game.js",
+                    aspectRatio: "16/9",
+                },
+            },
+        ],
+    },
 ];

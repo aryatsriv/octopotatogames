@@ -7,9 +7,16 @@ interface JavaScriptGameEngineProps {
     game: Game;
 }
 
+declare global {
+    interface Window {
+        initGame?: (canvas: HTMLCanvasElement) => unknown;
+    }
+}
+
 export default function JavaScriptGameEngine({ game }: JavaScriptGameEngineProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const gameInstanceRef = useRef<unknown>(null);
 
     useEffect(() => {
         if (!game.config.entryPoint) {
@@ -23,9 +30,17 @@ export default function JavaScriptGameEngine({ game }: JavaScriptGameEngineProps
         script.async = true;
 
         script.onload = () => {
-            // Game script should initialize itself
-            // It can access the canvas via: document.getElementById(`game-canvas-${game.id}`)
             console.log(`Loaded JavaScript game: ${game.name}`);
+
+            // Initialize the game if initGame function is available
+            if (canvasRef.current && typeof window.initGame === 'function') {
+                try {
+                    gameInstanceRef.current = window.initGame(canvasRef.current);
+                    console.log(`Initialized game: ${game.name}`);
+                } catch (error) {
+                    console.error(`Failed to initialize game: ${game.name}`, error);
+                }
+            }
         };
 
         script.onerror = () => {
@@ -36,7 +51,13 @@ export default function JavaScriptGameEngine({ game }: JavaScriptGameEngineProps
 
         return () => {
             // Cleanup: remove script on unmount
-            document.body.removeChild(script);
+            if (script.parentNode) {
+                document.body.removeChild(script);
+            }
+            // Clear the initGame function from window
+            if (typeof window.initGame !== 'undefined') {
+                delete window.initGame;
+            }
         };
     }, [game]);
 

@@ -9,7 +9,11 @@ interface UnityGameEngineProps {
 
 declare global {
     interface Window {
-        createUnityInstance: any;
+        createUnityInstance: (canvas: HTMLCanvasElement, config: {
+            dataUrl: string;
+            frameworkUrl: string;
+            codeUrl: string;
+        }, onProgress: (progress: number) => void) => Promise<void>;
     }
 }
 
@@ -23,8 +27,11 @@ export default function UnityGameEngine({ game }: UnityGameEngineProps) {
         const { loaderUrl, dataUrl, frameworkUrl, codeUrl } = game.config;
 
         if (!loaderUrl || !dataUrl || !frameworkUrl || !codeUrl) {
-            setError("Missing Unity build files configuration");
-            setLoading(false);
+            // Use setTimeout to avoid synchronous setState in effect
+            setTimeout(() => {
+                setError("Missing Unity build files configuration");
+                setLoading(false);
+            }, 0);
             return;
         }
 
@@ -56,8 +63,10 @@ export default function UnityGameEngine({ game }: UnityGameEngineProps) {
         };
 
         script.onerror = () => {
-            setError("Failed to load Unity loader");
-            setLoading(false);
+            setTimeout(() => {
+                setError("Failed to load Unity loader");
+                setLoading(false);
+            }, 0);
         };
 
         document.body.appendChild(script);
