@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAssembly Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a1a2e;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #game-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        canvas {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        #loading.hidden {
+            display: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error {
+            color: #ff6b6b;
+            padding: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game-container">
+        <div id="loading">
+            <div class="spinner"></div>
+            <div>Loading WebAssembly game...</div>
+        </div>
+        <canvas id="canvas" style="display: none;"></canvas>
+    </div>
+
+    <script type="module">
+        const canvas = document.getElementById('canvas');
+        const loading = document.getElementById('loading');
+        const container = document.getElementById('game-container');
+
+        // Initialize WebAssembly
+        async function initWasm() {
+            try {
+                // Example: Loading a simple WASM game
+                // Replace 'game.wasm' with your actual WASM file
+                const response = await fetch('game.wasm');
+                const bytes = await response.arrayBuffer();
+
+                // Import object with functions the WASM can call
+                const importObject = {
+                    env: {
+                        // Example JS functions that WASM can call
+                        consoleLog: (ptr, len) => {
+                            const text = new TextDecoder().decode(
+                                new Uint8Array(memory.buffer, ptr, len)
+                            );
+                            console.log(text);
+                        },
+                        // Add more imports as needed
+                    }
+                };
+
+                const { instance } = await WebAssembly.instantiate(bytes, importObject);
+                const memory = instance.exports.memory;
+
+                // Setup canvas
+                const ctx = canvas.getContext('2d');
+                canvas.width = 800;
+                canvas.height = 600;
+
+                // Hide loading, show canvas
+                loading.classList.add('hidden');
+                canvas.style.display = 'block';
+
+                // Initialize game if exported
+                if (instance.exports.init) {
+                    instance.exports.init();
+                }
+
+                // Main game loop
+                let lastTime = 0;
+                function gameLoop(currentTime) {
+                    const deltaTime = currentTime - lastTime;
+                    lastTime = currentTime;
+
+                    // Update game state if exported
+                    if (instance.exports.update) {
+                        instance.exports.update(deltaTime);
+                    }
+
+                    // Render game if exported
+                    if (instance.exports.render) {
+                        // Clear canvas
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                        // Call WASM render function
+                        instance.exports.render();
+
+                        // If WASM writes to a buffer, read and draw it
+                        // Example: const imageData = ctx.createImageData(canvas.width, canvas.height);
+                        // Read from WASM memory and put on canvas
+                    }
+
+                    requestAnimationFrame(gameLoop);
+                }
+
+                requestAnimationFrame(gameLoop);
+
+                // Handle input
+                canvas.addEventListener('click', (e) => {
+                    const rect = canvas.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    if (instance.exports.onClick) {
+                        instance.exports.onClick(x, y);
+                    }
+                });
+
+                canvas.addEventListener('keydown', (e) => {
+                    if (instance.exports.onKeyDown) {
+                        instance.exports.onKeyDown(e.keyCode);
+                    }
+                });
+
+                // Make canvas focusable for keyboard events
+                canvas.tabIndex = 1;
+                canvas.focus();
+
+            } catch (error) {
+                loading.innerHTML = `
+                    <div class="error">
+                        <h3>Failed to load game</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+                console.error('WASM loading error:', error);
+            }
+        }
+
+        // Start loading
+        initWasm();
+    </script>
+</body>
+
+</html>

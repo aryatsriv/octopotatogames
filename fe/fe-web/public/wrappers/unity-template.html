@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,13 +11,13 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             background: #000;
             overflow: hidden;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
         }
-        
+
         #unity-container {
             width: 100vw;
             height: 100vh;
@@ -25,13 +26,13 @@
             justify-content: center;
             position: relative;
         }
-        
+
         #unity-canvas {
             width: 100%;
             height: 100%;
             display: block;
         }
-        
+
         #unity-loading-bar {
             position: absolute;
             top: 50%;
@@ -41,7 +42,7 @@
             text-align: center;
             color: white;
         }
-        
+
         #unity-progress-bar-empty {
             width: 100%;
             height: 20px;
@@ -50,7 +51,7 @@
             overflow: hidden;
             margin: 10px 0;
         }
-        
+
         #unity-progress-bar-full {
             width: 0%;
             height: 100%;
@@ -58,11 +59,11 @@
             border-radius: 10px;
             transition: width 0.3s;
         }
-        
+
         #unity-loading-bar.hidden {
             display: none;
         }
-        
+
         .unity-error {
             color: #ff6b6b;
             padding: 20px;
@@ -70,6 +71,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="unity-container">
         <canvas id="unity-canvas" style="display: none;"></canvas>
@@ -114,7 +116,7 @@
                 // Game loaded successfully
                 loadingBar.classList.add("hidden");
                 canvas.style.display = "block";
-                
+
                 // Optional: Handle fullscreen
                 canvas.addEventListener("click", () => {
                     if (unityInstance.SetFullscreen) {
@@ -131,7 +133,7 @@
                 `;
             });
         };
-        
+
         script.onerror = () => {
             loadingBar.innerHTML = `
                 <div class="unity-error">
@@ -140,8 +142,9 @@
                 </div>
             `;
         };
-        
+
         document.body.appendChild(script);
     </script>
 </body>
+
 </html>
