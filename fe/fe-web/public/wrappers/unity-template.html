@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+        
+        #unity-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        #unity-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        #unity-loading-bar {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            text-align: center;
+            color: white;
+        }
+        
+        #unity-progress-bar-empty {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        #unity-progress-bar-full {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+        
+        #unity-loading-bar.hidden {
+            display: none;
+        }
+        
+        .unity-error {
+            color: #ff6b6b;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="unity-container">
+        <canvas id="unity-canvas" style="display: none;"></canvas>
+        <div id="unity-loading-bar">
+            <div>Loading Game...</div>
+            <div id="unity-progress-bar-empty">
+                <div id="unity-progress-bar-full"></div>
+            </div>
+            <div id="unity-progress-text">0%</div>
+        </div>
+    </div>
+
+    <script>
+        // Replace these paths with your actual Unity build files
+        const buildUrl = "Build";
+        const config = {
+            dataUrl: `${buildUrl}/game.data`,
+            frameworkUrl: `${buildUrl}/game.framework.js`,
+            codeUrl: `${buildUrl}/game.wasm`,
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "YourCompany",
+            productName: "YourGame",
+            productVersion: "1.0",
+        };
+
+        const canvas = document.querySelector("#unity-canvas");
+        const loadingBar = document.querySelector("#unity-loading-bar");
+        const progressBarFull = document.querySelector("#unity-progress-bar-full");
+        const progressText = document.querySelector("#unity-progress-text");
+        const container = document.querySelector("#unity-container");
+
+        // Load Unity Loader script
+        const script = document.createElement("script");
+        script.src = `${buildUrl}/game.loader.js`;
+        script.onload = () => {
+            createUnityInstance(canvas, config, (progress) => {
+                // Update loading progress
+                const percentage = Math.round(progress * 100);
+                progressBarFull.style.width = `${percentage}%`;
+                progressText.textContent = `${percentage}%`;
+            }).then((unityInstance) => {
+                // Game loaded successfully
+                loadingBar.classList.add("hidden");
+                canvas.style.display = "block";
+                
+                // Optional: Handle fullscreen
+                canvas.addEventListener("click", () => {
+                    if (unityInstance.SetFullscreen) {
+                        unityInstance.SetFullscreen(1);
+                    }
+                });
+            }).catch((message) => {
+                // Handle loading error
+                loadingBar.innerHTML = `
+                    <div class="unity-error">
+                        <h3>Failed to load game</h3>
+                        <p>${message}</p>
+                    </div>
+                `;
+            });
+        };
+        
+        script.onerror = () => {
+            loadingBar.innerHTML = `
+                <div class="unity-error">
+                    <h3>Failed to load Unity</h3>
+                    <p>Could not load Unity loader script</p>
+                </div>
+            `;
+        };
+        
+        document.body.appendChild(script);
+    </script>
+</body>
+</html>

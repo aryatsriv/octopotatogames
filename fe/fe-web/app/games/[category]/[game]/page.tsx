@@ -6,7 +6,7 @@ import { Gamepad2, ArrowLeft } from "lucide-react";
 import { notFound, useParams } from "next/navigation";
 import { theme } from "@/lib/theme";
 import { useThemeColors } from "@/lib/useThemeColors";
-import GameRenderer from "@/components/GameRenderer";
+import GameFrame from "@/components/GameFrame";
 
 export default function GamePage() {
     const params = useParams();
@@ -84,11 +84,15 @@ export default function GamePage() {
             </div>
 
             {/* Game Container */}
-            <div className="rounded-lg border p-6" style={{
+            <div className="rounded-lg border overflow-hidden" style={{
                 backgroundColor: colors.background.secondary,
                 borderColor: colors.border.DEFAULT
             }}>
-                <GameRenderer game={game} />
+                <GameFrame
+                    src={game.config.url || `/games/${game.slug}/index.html`}
+                    title={game.name}
+                    aspectRatio={game.config.aspectRatio || "16/9"}
+                />
             </div>
 
             {/* Game Info */}

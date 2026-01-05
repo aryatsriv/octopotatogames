@@ -1,16 +1,9 @@
-export type GameEngine = 'javascript' | 'unity' | 'html5' | 'iframe';
+export type GameEngine = 'html5' | 'unity' | 'webassembly';
 
 export interface GameConfig {
     engine: GameEngine;
-    // For JavaScript games
-    entryPoint?: string; // Path to the main JS file
-    // For Unity games
-    loaderUrl?: string;
-    dataUrl?: string;
-    frameworkUrl?: string;
-    codeUrl?: string;
-    // For HTML5/iframe games
-    url?: string;
+    // URL to the game's index.html (all games load via iframe)
+    url: string;
     // Common settings
     width?: string;
     height?: string;

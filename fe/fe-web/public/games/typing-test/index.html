@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Test Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #game-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+            text-align: center;
+        }
+
+        #stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 2rem 0;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        #text-display {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            font-size: 1.5rem;
+            line-height: 2;
+            margin-bottom: 1rem;
+            min-height: 150px;
+            color: #333;
+        }
+
+        #text-display .correct {
+            color: #2ecc71;
+        }
+
+        #text-display .incorrect {
+            color: #e74c3c;
+            background: #ffebee;
+        }
+
+        #input-field {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-family: 'Courier New', monospace;
+            border: 2px solid #ddd;
+            border-radius: 0.5rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #input-field:focus {
+            border-color: #f5576c;
+        }
+
+        .info {
+            margin-top: 1rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        #start-button {
+            background: #f5576c;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            display: block;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        #start-button:hover {
+            background: #e0465a;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game-container">
+        <h1>Typing Speed Test</h1>
+        <div id="stats">
+            <div>WPM: <span id="wpm">0</span></div>
+            <div>Accuracy: <span id="accuracy">100</span>%</div>
+            <div>Time: <span id="timer">60</span>s</div>
+        </div>
+        <div id="text-display">Click "Start Test" to begin typing...</div>
+        <input type="text" id="input-field" placeholder="Start typing here..." disabled>
+        <button id="start-button">Start Test</button>
+        <div class="info">Type the text above as accurately and quickly as you can!</div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>
