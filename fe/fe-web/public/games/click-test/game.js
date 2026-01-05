@@ -45,20 +45,20 @@ class ClickSpeedGame {
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             const { width, height } = this.canvas;
-            
+
             const buttonWidth = 150;
             const buttonHeight = 50;
             const spacing = 20;
             const totalWidth = (buttonWidth * 2) + spacing;
             const startX = (width - totalWidth) / 2;
             const buttonY = height * 0.92;
-            
+
             // Check if mouse is over any button
             const overButton = (
                 (x >= startX && x <= startX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) ||
                 (x >= startX + buttonWidth + spacing && x <= startX + totalWidth && y >= buttonY && y <= buttonY + buttonHeight)
             );
-            
+
             this.canvas.style.cursor = overButton ? 'pointer' : 'default';
         } else {
             this.canvas.style.cursor = 'default';
