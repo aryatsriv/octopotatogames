@@ -1,8 +1,7 @@
 "use client";
 
-import { Menu, Moon, Sun } from "lucide-react";
+import { Menu } from "lucide-react";
 import { theme } from "@/lib/theme";
-import { useTheme } from "next-themes";
 import { useThemeColors } from "@/lib/useThemeColors";
 
 interface HeaderProps {
@@ -10,8 +9,7 @@ interface HeaderProps {
 }
 
 export default function Header({ onMenuClick }: HeaderProps) {
-    const { setTheme } = useTheme();
-    const { isDark, mounted, colors } = useThemeColors();
+    const { colors } = useThemeColors();
 
     return (
         <header className="sticky top-0 z-50 w-full border-b" style={{
@@ -65,20 +63,6 @@ export default function Header({ onMenuClick }: HeaderProps) {
                         />
                     </div>
                 </div>
-
-                {/* Theme toggle */}
-                {mounted && (
-                    <button
-                        onClick={() => setTheme(isDark ? "light" : "dark")}
-                        className="inline-flex items-center justify-center rounded-md p-2"
-                        style={{ color: colors.text.primary }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.background.tertiary}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                        aria-label="Toggle theme"
-                    >
-                        {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-                    </button>
-                )}
             </div>
         </header>
     );
